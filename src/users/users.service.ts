@@ -26,11 +26,28 @@ export class UsersService {
     return user;
   }
 
-  // update(id: number, updateUserDto: UpdateUserDto) {
-  //   return `This action updates a #${id} user`;
-  // }
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    const userToUpdate = await this.userRepository.findOneBy({
+      id,
+    });
+    // userToUpdate = { userToUpdate, ...updateUserDto };  //doesnt work cause it seems that userToUpdate is a constant!
+    updateUserDto.password
+      ? (userToUpdate.password = updateUserDto.password)
+      : null;
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} user`;
-  // }
+    updateUserDto.email ? (userToUpdate.email = updateUserDto.email) : null;
+
+    updateUserDto.phoneNumber
+      ? (userToUpdate.phoneNumber = updateUserDto.phoneNumber)
+      : null;
+
+    await this.userRepository.save(userToUpdate);
+    return userToUpdate;
+  }
+
+  async remove(nickName: string) {
+    const userToRemove = await this.userRepository.findOneBy({ nickName });
+    await this.userRepository.remove(userToRemove);
+    return "Done!";
+  }
 }
