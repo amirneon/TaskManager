@@ -7,9 +7,13 @@ import { TasksModule } from "./tasks/tasks.module";
 import { Task } from "./tasks/entities/task.entity";
 import { UsersModule } from "./users/users.module";
 import { User } from "./users/entities/user.entity";
+import { AuthModule } from "./auth/auth.module";
+import { APP_GUARD } from "@nestjs/core";
+import { AuthGuard } from "./common/guards/auth.guard";
 
 @Module({
   imports: [
+    AuthModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -29,6 +33,12 @@ import { User } from "./users/entities/user.entity";
     UsersModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
 export class AppModule {}

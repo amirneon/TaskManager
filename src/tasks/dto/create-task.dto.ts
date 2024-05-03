@@ -7,9 +7,9 @@ export class CreateTaskDto {
 
   @IsOptional()
   @IsString()
-  links?: string;
+  description?: string;
 
   @IsOptional()
   @IsString()
-  description?: string;
+  links?: string;
 }
