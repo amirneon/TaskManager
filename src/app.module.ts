@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { ConfigModule, ConfigService } from "@nestjs/config";
@@ -10,6 +10,7 @@ import { User } from "./users/entities/user.entity";
 import { AuthModule } from "./auth/auth.module";
 import { APP_GUARD } from "@nestjs/core";
 import { AuthGuard } from "./common/guards/auth.guard";
+import { RoleCheck } from "./middlewares/role-check-middleware";
 
 @Module({
   imports: [
@@ -41,4 +42,16 @@ import { AuthGuard } from "./common/guards/auth.guard";
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(RoleCheck)
+      .forRoutes(
+        "users/findAllByAdmin",
+        "users/giveRoleByAdmin",
+        "users/deleteUserByAdmin",
+        "users/updateByAdmin/:nickName",
+        "tasks/findAllByAdmin"
+      );
+  }
+}

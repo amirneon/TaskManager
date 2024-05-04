@@ -13,6 +13,7 @@ import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { Request } from "express";
 import { Public } from "src/common/decorators/public.decorators";
+import { UpdateUserByAdminDto } from "./dto/update-user-byAdmin.dto";
 
 @Controller("users")
 export class UsersController {
@@ -24,9 +25,9 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  @Get()
+  @Get("findAllByAdmin")
   findAll() {
-    return this.usersService.findAll();
+    return this.usersService.findAllByAdmin();
   }
 
   @Get(":nickName")
@@ -39,8 +40,21 @@ export class UsersController {
     return this.usersService.update(req["user"].sub, updateUserDto);
   }
 
-  @Delete()
-  remove(@Body("nickName") nickName: string) {
-    return this.usersService.remove(nickName);
+  @Delete("deleteUserByAdmin")
+  deleteUserByAdmin(@Body("nickName") nickName: string) {
+    return this.usersService.deleteUserByAdmin(nickName);
+  }
+
+  @Put("giveRoleByAdmin")
+  giveRole(@Body() body) {
+    return this.usersService.giveRoleByAdmin(body.nickName, body.role);
+  }
+
+  @Put("updateByAdmin/:nickName")
+  updateByAdmin(
+    @Param("nickName") nickName: string,
+    @Body() UpdateUserByAdminDto: UpdateUserByAdminDto
+  ) {
+    return this.usersService.updateByAdmin(nickName, UpdateUserByAdminDto);
   }
 }
