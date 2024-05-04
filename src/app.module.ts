@@ -8,9 +8,10 @@ import { Task } from "./tasks/entities/task.entity";
 import { UsersModule } from "./users/users.module";
 import { User } from "./users/entities/user.entity";
 import { AuthModule } from "./auth/auth.module";
-import { APP_GUARD } from "@nestjs/core";
+import { APP_FILTER, APP_GUARD } from "@nestjs/core";
 import { AuthGuard } from "./common/guards/auth.guard";
 import { RoleCheck } from "./middlewares/role-check-middleware";
+import { DuplicateEntryFilter } from "./errorhandler/duplicate-entry.filter";
 
 @Module({
   imports: [
@@ -36,6 +37,10 @@ import { RoleCheck } from "./middlewares/role-check-middleware";
   controllers: [AppController],
   providers: [
     AppService,
+    {
+      provide: APP_FILTER,
+      useClass: DuplicateEntryFilter,
+    },
     {
       provide: APP_GUARD,
       useClass: AuthGuard,

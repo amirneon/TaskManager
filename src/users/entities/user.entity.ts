@@ -1,5 +1,12 @@
 import { Task } from "src/tasks/entities/task.entity";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from "typeorm";
 
 export enum UserRole {
   ADMIN = "admin",
@@ -32,4 +39,17 @@ export class User {
 
   @OneToMany(() => Task, (task) => task.user)
   tasks: Task[];
+
+  @CreateDateColumn({
+    type: "timestamp",
+    default: () => "CURRENT_TIMESTAMP(6)",
+  })
+  public created_at: Date;
+
+  @UpdateDateColumn({
+    type: "timestamp",
+    default: () => "CURRENT_TIMESTAMP(6)",
+    onUpdate: "CURRENT_TIMESTAMP(6)",
+  })
+  public updated_at: Date;
 }
