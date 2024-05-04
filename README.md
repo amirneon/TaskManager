@@ -31,7 +31,7 @@ DB_PORT
 DB_USERNAME
 DB_PASSWORD
 DB_NAME
-Then you can npm run start:dev and test the API's . hope it would be helpul ;)
+Then you can npm run start:dev and test the API's . Hope it will be helpful ;)
 
 ## Installation
 
