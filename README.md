@@ -25,6 +25,13 @@
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+After installation (npm i) you should craete .env which should contains : 
+DB_HOST
+DB_PORT
+DB_USERNAME
+DB_PASSWORD
+DB_NAME
+Then you can npm run start:dev and test the API's . hope it would be helpul ;)
 
 ## Installation
 
